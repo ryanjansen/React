@@ -34,10 +34,37 @@ const options = [
   },
 ];
 
+const showAccordian = () => {
+  if (window.location.pathname === "/") {
+    return <Accordion items={items} />;
+  }
+};
+
+const showDropdown = () => {
+  if (window.location.pathname === "/dropdown") {
+    return <Dropdown options={options} />;
+  }
+};
+
+const showSearch = () => {
+  if (window.location.pathname === "/search") {
+    return <Search />;
+  }
+};
+
+const showTranslate = () => {
+  if (window.location.pathname === "/translate") {
+    return <Translate />;
+  }
+};
+
 export default () => {
   return (
     <div>
-      <Translate />
+      {showAccordian()}
+      {showDropdown()}
+      {showSearch()}
+      {showTranslate()}
     </div>
   );
 };
