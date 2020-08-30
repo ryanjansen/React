@@ -1,20 +1,16 @@
 {
   "streams": [
     {
-      "title": "d",
-      "description": "d",
+      "title": "Test 1",
+      "description": "Test 1",
+      "userId": "108561868732766010240",
       "id": 1
     },
     {
-      "title": "Rekting Noobs in Apex",
-      "description": "aceu",
-      "id": 2
-    },
-    {
-      "title": "New Stream",
-      "description": "Me",
+      "title": "Test 2",
+      "description": "Test 2",
       "userId": "108561868732766010240",
-      "id": 3
+      "id": 2
     }
   ]
 }
