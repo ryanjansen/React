@@ -1,58 +1,66 @@
 import React from "react";
 import "semantic-ui-css/semantic.min.css";
-import { Container, Header, Input, List, Form } from "semantic-ui-react";
+import {
+  Header,
+  Container,
+  Input,
+  List,
+  Segment,
+  Image,
+} from "semantic-ui-react";
+import { ReactComponent as YCLogo } from "./yc.svg";
+import { ReactComponent as HeinekenLogo } from "./heineken.svg";
+import { ReactComponent as ElsevierLogo } from "./elsevier.svg";
 
 class App extends React.Component {
-  state = { habits: ["Piano"], inputValue: "" };
-
-  renderList() {
-    return this.state.habits.map((habit) => {
-      return (
-        <List.Item key={this.state.habits.indexOf(habit)}>
-          <List.Content>
-            <List.Header>{habit}</List.Header>
-          </List.Content>
-        </List.Item>
-      );
-    });
-  }
-
-  addHabit = () => {
-    this.setState(() => {
-      const newState = [...this.state.habits, this.state.inputValue];
-
-      return { habits: newState };
-    });
-  };
-
-  handleChange = (e) => {
-    this.setState({ inputValue: e.target.value });
-  };
-
   render() {
     return (
-      <div>
-        <Container textAlign="center">
-          <Header as="h1">
-            Add your <b>Habit</b>
-          </Header>
-
+      <Container
+        style={{
+          marginTop: "2em",
+        }}
+      >
+        <Segment
+          style={{
+            backgroundImage: 'url("../../public/assets/Hero Background.jpg")',
+          }}
+        >
+          <Header as="h3">Heavyweight</Header>
+          <Header
+            style={{ fontSize: "2.5rem" }}
+            as="h1"
+            content="Is design growing your product?"
+          />
+          <p style={{ fontSize: "1.25rem" }}>
+            Create an interface that drives value by teaming up with our studio
+            to rethink and design it.
+          </p>
           <Input
             action={{
-              color: "red",
-              icon: "add",
-              onClick: () => this.addHabit(),
+              color: "blue",
+              icon: "arrow right",
+              content: "Get in touch",
+              labelPosition: "right",
             }}
-            placeholder="Type Here"
-            value={this.state.inputValue}
-            onChange={this.handleChange}
+            placeholder="Your email address"
           />
 
-          <List celled size="massive">
-            {this.renderList()}
-          </List>
-        </Container>
-      </div>
+          <div style={{ marginTop: "2em" }}>
+            <p>Clients backed by</p>
+            <List horizontal size="tiny">
+              <List.Item>
+                <YCLogo />
+              </List.Item>
+              <List.Item>
+                <HeinekenLogo />
+              </List.Item>
+              <List.Item>
+                <ElsevierLogo />
+              </List.Item>
+            </List>
+          </div>
+        </Segment>
+      </Container>
     );
   }
 }
