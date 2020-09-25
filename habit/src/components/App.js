@@ -1,14 +1,14 @@
 import React from "react";
 import "semantic-ui-css/semantic.min.css";
-import { Container, Header, Input, List, Form } from "semantic-ui-react";
+import { Container, Header, Input, List, Grid } from "semantic-ui-react";
 
 class App extends React.Component {
   state = { habits: ["Piano"], inputValue: "" };
 
   renderList() {
-    return this.state.habits.map((habit) => {
+    return this.state.habits.map((habit, i) => {
       return (
-        <List.Item key={this.state.habits.indexOf(habit)}>
+        <List.Item key={i}>
           <List.Content>
             <List.Header>{habit}</List.Header>
           </List.Content>
@@ -21,7 +21,7 @@ class App extends React.Component {
     this.setState(() => {
       const newState = [...this.state.habits, this.state.inputValue];
 
-      return { habits: newState };
+      return { habits: newState, inputValue: "" };
     });
   };
 
