@@ -11,6 +11,11 @@ const WorkoutForm = ({ onFormSubmit }) => {
   return (
     <form className="ui form" onSubmit={handleSubmit(onSubmit)}>
       <div className="field">
+        <label>Date</label>
+        <input type="date" name="date" ref={register({ required: true })} />
+        {errors.date?.type === "required" && "Please enter a date"}
+      </div>
+      <div className="field">
         <label>Select Workout</label>
         <select className="ui dropdown" name="workout" ref={register}>
           <option value="A">A</option>
@@ -56,7 +61,7 @@ const WorkoutForm = ({ onFormSubmit }) => {
                   ref={register({ required: true, maxLength: 3 })}
                 />
                 {errors.rowWeight?.type === "required" &&
-                  "Please enter a weight for the Bench Press"}
+                  "Please enter a weight for the Row"}
               </div>
 
               <div className="four wide field">
@@ -81,7 +86,7 @@ const WorkoutForm = ({ onFormSubmit }) => {
                   ref={register({ required: true, maxLength: 3 })}
                 />
                 {errors.squatWeight?.type === "required" &&
-                  "Please enter a weight for the Bench Press"}
+                  "Please enter a weight for the Squat"}
               </div>
 
               <div className="four wide field">
