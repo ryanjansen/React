@@ -1,6 +1,7 @@
 import React from "react";
 import WorkoutForm from "./WorkoutForm";
 import WorkoutHistory from "./WorkoutHistory";
+import ls from "local-storage";
 
 class App extends React.Component {
   state = {
@@ -8,6 +9,21 @@ class App extends React.Component {
     workoutList: [],
     selectedWorkout: "",
   };
+
+  componentDidMount() {
+    const wlist = ls.get("workoutList");
+    let sw = "";
+
+    if (wlist) {
+      sw = wlist[wlist.length - 1];
+    }
+
+    this.setState({
+      data: ls.get("data") || [],
+      workoutList: ls.get("workoutList") || [],
+      selectedWorkout: sw,
+    });
+  }
 
   handleDropdownChange = (e) => {
     this.setState({ selectedWorkout: e.target.value });
@@ -17,17 +33,13 @@ class App extends React.Component {
     if (this.state.workoutList.includes(data.date)) {
       console.log("Bad date");
     } else {
-      this.setState((state) => {
-        const list = [...state.data, data];
-        const wlist = [...state.workoutList, data.date];
-        const sw = data.date;
+      const list = [...this.state.data, data];
+      const wlist = [...this.state.workoutList, data.date];
+      const sw = data.date;
+      this.setState({ data: list, workoutList: wlist, selectedWorkout: sw });
 
-        return {
-          data: list,
-          workoutList: wlist,
-          selectedWorkout: sw,
-        };
-      });
+      ls.set("data", list);
+      ls.set("workoutList", wlist);
     }
   };
 
