@@ -22,9 +22,7 @@ class WorkoutHistory extends React.Component {
   }
 
   renderOneWorkout() {
-    let w = this.props.data.filter(
-      (e) => e.date === this.props.selectedWorkout
-    )[0];
+    let w = this.props.data.find((e) => e.date === this.props.selectedWorkout);
 
     if (w) {
       if (w.workout === "A") {
