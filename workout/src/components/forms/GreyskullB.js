@@ -5,7 +5,7 @@ const GreyskullB = ({ register, errors }) => {
     <>
       <div
         className={`field ${
-          errors.overheadWeight || errors.overheadReps ? "error" : ""
+          errors.exercises && errors.exercises["Overhead Press"] ? "error" : ""
         }  `}
       >
         <label>Overhead Press</label>
@@ -14,7 +14,7 @@ const GreyskullB = ({ register, errors }) => {
             <div className="ui right labeled input">
               <input
                 type="number"
-                name="overheadWeight"
+                name="exercises.Overhead Press.Weight"
                 placeholder="Weight"
                 ref={register({ required: true, maxLength: 3 })}
               />
@@ -25,7 +25,7 @@ const GreyskullB = ({ register, errors }) => {
           <div className="eight wide field">
             <input
               type="number"
-              name="overheadReps"
+              name="exercises.Overhead Press.Reps"
               placeholder="AMRAP"
               ref={register({ required: true, maxLength: 3 })}
             />
@@ -35,7 +35,7 @@ const GreyskullB = ({ register, errors }) => {
 
       <div
         className={`field ${
-          errors.pullupWeight || errors.pullupReps ? "error" : ""
+          errors.exercises && errors.exercises.pullup ? "error" : ""
         }  `}
       >
         <label>Pullup</label>
@@ -44,7 +44,7 @@ const GreyskullB = ({ register, errors }) => {
             <div className="ui right labeled input">
               <input
                 type="number"
-                name="pullupWeight"
+                name="exercises.pullup.Weight"
                 placeholder="Weight"
                 ref={register({ required: true, maxLength: 3 })}
               />
@@ -55,7 +55,7 @@ const GreyskullB = ({ register, errors }) => {
           <div className="eight wide field">
             <input
               type="number"
-              name="pullupReps"
+              name="exercises.pullup.Reps"
               placeholder="AMRAP"
               ref={register({ required: true, maxLength: 3 })}
             />
@@ -65,7 +65,7 @@ const GreyskullB = ({ register, errors }) => {
 
       <div
         className={`field ${
-          errors.deadliftWeight || errors.deadliftReps ? "error" : ""
+          errors.exercises && errors.exercises.Deadlift ? "error" : ""
         }  `}
       >
         <label>Deadlift</label>
@@ -74,7 +74,7 @@ const GreyskullB = ({ register, errors }) => {
             <div className="ui right labeled input">
               <input
                 type="number"
-                name="deadliftWeight"
+                name="exercises.Deadlift.Weight"
                 placeholder="Weight"
                 ref={register({ required: true, maxLength: 3 })}
               />
@@ -85,7 +85,7 @@ const GreyskullB = ({ register, errors }) => {
           <div className="eight wide field">
             <input
               type="number"
-              name="deadliftReps"
+              name="exercises.Deadlift.Reps"
               placeholder="AMRAP"
               ref={register({ required: true, maxLength: 3 })}
             />

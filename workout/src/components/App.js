@@ -1,46 +1,68 @@
 import React from "react";
 import WorkoutForm from "./WorkoutForm";
 import WorkoutHistory from "./WorkoutHistory";
-import ls from "local-storage";
+import axios from "axios";
 
 class App extends React.Component {
   state = {
-    data: [],
+    workouts: [],
     workoutList: [],
     selectedWorkout: "",
   };
 
+  getWorkouts() {
+    axios
+      .get("/api/workouts")
+      .then((workouts) => {
+        let wlist = [];
+        workouts.data.forEach((w) => {
+          wlist.push(w.date);
+        });
+
+        this.setState({
+          workouts: workouts.data,
+          workoutList: wlist,
+          selectedWorkout: wlist[wlist.length - 1],
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
   componentDidMount() {
-    const wlist = ls.get("workoutList");
-    let sw = "";
-
-    if (wlist) {
-      sw = wlist[wlist.length - 1];
-    }
-
-    this.setState({
-      data: ls.get("data") || [],
-      workoutList: ls.get("workoutList") || [],
-      selectedWorkout: sw,
-    });
+    this.getWorkouts();
   }
 
   handleDropdownChange = (e) => {
     this.setState({ selectedWorkout: e.target.value });
   };
 
-  onFormSubmit = (data) => {
-    if (this.state.workoutList.includes(data.date)) {
+  onFormSubmit = (newWorkout) => {
+    if (this.state.workoutList.includes(newWorkout.date)) {
       console.log("Bad date");
     } else {
-      const list = [...this.state.data, data];
-      const wlist = [...this.state.workoutList, data.date];
-      const sw = data.date;
-      this.setState({ data: list, workoutList: wlist, selectedWorkout: sw });
-
-      ls.set("data", list);
-      ls.set("workoutList", wlist);
+      axios
+        .post("/api/workouts", {
+          date: newWorkout.date,
+          workout: newWorkout.workout,
+          exercises: newWorkout.exercises,
+        })
+        .then(() => {
+          this.getWorkouts();
+        })
+        .catch((err) => {
+          alert("Could not add workout");
+        });
     }
+  };
+
+  handleDelete = (id) => {
+    axios
+      .delete(`/api/workouts/${id}`)
+      .then(() => {
+        // alert("workout deleted succesfully");
+        this.getWorkouts();
+      })
+      .catch((err) => console.log(err));
   };
 
   render() {
@@ -59,10 +81,11 @@ class App extends React.Component {
 
           <div className="column">
             <WorkoutHistory
-              data={this.state.data}
+              workouts={this.state.workouts}
               workoutList={this.state.workoutList}
               selectedWorkout={this.state.selectedWorkout}
               handleDropdownChange={this.handleDropdownChange}
+              handleDelete={this.handleDelete}
             />
           </div>
         </div>

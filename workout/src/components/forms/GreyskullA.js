@@ -4,19 +4,19 @@ const GreyskullA = ({ register, errors }) => {
   return (
     <>
       <div
-        className={`field ${
-          errors.benchWeight || errors.benchReps ? "error" : ""
-        }  `}
+        className={`field 
+        ${errors.exercises && errors.exercises["Bench Press"] ? "error" : ""}  
+        `}
       >
         <label>Bench Press</label>
         <div className="two fields">
           <div className="eight wide field">
             <div className="ui right labeled input">
-              {" "}
               <input
                 type="number"
-                name="benchWeight"
+                name="exercises.Bench Press.Weight"
                 placeholder="Weight"
+                defaultValue="4"
                 ref={register({ required: true, maxLength: 3 })}
               />
               <div className="ui basic label">kg</div>
@@ -26,8 +26,9 @@ const GreyskullA = ({ register, errors }) => {
           <div className="eight wide field">
             <input
               type="number"
-              name="benchReps"
+              name="exercises.Bench Press.Reps"
               placeholder="AMRAP"
+              defaultValue="4"
               ref={register({ required: true, maxLength: 3 })}
             />
           </div>
@@ -36,7 +37,7 @@ const GreyskullA = ({ register, errors }) => {
 
       <div
         className={`field ${
-          errors.rowWeight || errors.rowReps ? "error" : ""
+          errors.exercises && errors.exercises.Row ? "error" : ""
         }  `}
       >
         <label>Row</label>
@@ -46,8 +47,9 @@ const GreyskullA = ({ register, errors }) => {
               {" "}
               <input
                 type="number"
-                name="rowWeight"
+                name="exercises.Row.Weight"
                 placeholder="Weight"
+                defaultValue="4"
                 ref={register({ required: true, maxLength: 3 })}
               />
               <div className="ui basic label">kg</div>
@@ -57,8 +59,9 @@ const GreyskullA = ({ register, errors }) => {
           <div className="eight wide field">
             <input
               type="number"
-              name="rowReps"
+              name="exercises.Row.Reps"
               placeholder="AMRAP"
+              defaultValue="4"
               ref={register({ required: true, maxLength: 3 })}
             />
           </div>
@@ -67,7 +70,7 @@ const GreyskullA = ({ register, errors }) => {
 
       <div
         className={`field ${
-          errors.squatWeight || errors.squatReps ? "error" : ""
+          errors.exercises && errors.exercises.Squat ? "error" : ""
         }  `}
       >
         <label>Squat</label>
@@ -76,8 +79,9 @@ const GreyskullA = ({ register, errors }) => {
             <div className="ui right labeled input">
               <input
                 type="number"
-                name="squatWeight"
+                name="exercises.Squat.Weight"
                 placeholder="Weight"
+                defaultValue="4"
                 ref={register({ required: true, maxLength: 3 })}
               />
               <div className="ui basic label">kg</div>
@@ -87,8 +91,9 @@ const GreyskullA = ({ register, errors }) => {
           <div className="eight wide field">
             <input
               type="number"
-              name="squatReps"
+              name="exercises.Squat.Reps"
               placeholder="AMRAP"
+              defaultValue="4"
               ref={register({ required: true, maxLength: 3 })}
             />
           </div>
