@@ -1,18 +1,30 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const compression = require("compression");
+const helmet = require("helmet");
 const cors = require("cors");
 const path = require("path");
+
 const app = express();
+
+app.use(compression());
+
+app.use(helmet({ contentSecurityPolicy: false }));
+
 app.use(cors());
+
 app.options("*", cors());
+
 require("./database");
 
 app.use(bodyParser.json());
 
-//API
+//APIs
 
-const workouts = require("./api/workouts");
-app.use("/api/workouts", workouts);
+const workoutsAPI = require("./api/workouts");
+const usersAPI = require("./api/users");
+app.use("/api/workouts", workoutsAPI);
+app.use("/api/users", usersAPI);
 
 app.use(express.static(path.join(__dirname, "../build")));
 app.get("*", (req, res) => {
