@@ -4,14 +4,14 @@ import axios from "axios";
 import { Redirect } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 
-const LoginForm = ({ onFormSubmit }) => {
+const SignupForm = ({ onFormSubmit }) => {
   const authContext = useContext(AuthContext);
   const [redirectOnSignup, setRedirect] = useState(false);
   const { register, errors, handleSubmit } = useForm();
 
   const onSubmit = async ({ username, password }) => {
     try {
-      const { data } = await axios.post("/api/users/login", {
+      const { data } = await axios.post("/api/users/signup", {
         username,
         password,
       });
@@ -27,7 +27,7 @@ const LoginForm = ({ onFormSubmit }) => {
     <>
       {redirectOnSignup && <Redirect to="/tracker" />}
       <div className="ui container">
-        <h1 className="header">Login</h1>
+        <h1 className="header">Signup</h1>
         <form className="ui form" onSubmit={handleSubmit(onSubmit)}>
           <div className={`field ${errors.username ? "error" : ""}  `}>
             <label>Username</label>
@@ -55,4 +55,4 @@ const LoginForm = ({ onFormSubmit }) => {
   );
 };
 
-export default LoginForm;
+export default SignupForm;

@@ -23,13 +23,16 @@ class WorkoutHistory extends React.Component {
 
   renderWorkout() {
     let w = this.props.workouts.find(
-      (e) => e.date === this.props.selectedWorkout
+      (e) => e._id === this.props.selectedWorkout
     );
 
     if (w) {
+      console.log(w);
       return (
         <>
-          <h3 className="ui header">{this.renderDate(w.date)}</h3>
+          <h3 className="ui header">
+            {this.renderDate(w.date)} {w.user}
+          </h3>
           <table className="ui celled fixed unstackable striped table">
             <thead>
               <tr>
@@ -52,7 +55,7 @@ class WorkoutHistory extends React.Component {
           </table>
           <button
             className="ui button negative"
-            onClick={() => this.props.handleDelete(w.date)}
+            onClick={() => this.props.handleDelete(w._id)}
           >
             Delete
           </button>
@@ -62,7 +65,7 @@ class WorkoutHistory extends React.Component {
   }
 
   renderDropdown() {
-    if (this.props.workoutList.length !== 0) {
+    if (this.props.workouts.length !== 0) {
       return (
         <>
           <div className="ui form">
@@ -73,10 +76,10 @@ class WorkoutHistory extends React.Component {
                 onChange={this.props.handleDropdownChange}
                 value={this.props.selectedWorkout}
               >
-                {this.props.workoutList.map((w) => {
+                {this.props.workouts.map((w) => {
                   return (
-                    <option key={w} value={w}>
-                      {this.renderDate(w)}
+                    <option key={w._id} value={w._id}>
+                      {this.renderDate(w.date)}
                     </option>
                   );
                 })}

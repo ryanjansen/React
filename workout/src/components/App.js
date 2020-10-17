@@ -1,16 +1,43 @@
-import React from "react";
+import React, { useContext } from "react";
 import Tracker from "./Tracker";
 import Login from "./authentication/Login";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Signup from "./authentication/Signup";
+import Home from "./Home";
+import { AuthContext, AuthProvider } from "../context/AuthContext";
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+
+const AuthenticatedRoute = ({ children, ...rest }) => {
+  const authContext = useContext(AuthContext);
+  return (
+    <Route
+      {...rest}
+      render={() =>
+        authContext.isAuthenticated() ? children : <Redirect to="/" />
+      }
+    />
+  );
+};
 
 class App extends React.Component {
   render() {
     return (
       <Router>
-        <Switch>
-          <Route path="/" exact component={Login} />
-          <Route path="/tracker" component={Tracker} />
-        </Switch>
+        <AuthProvider>
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <AuthenticatedRoute>
+              <Tracker />
+            </AuthenticatedRoute>
+          </Switch>
+        </AuthProvider>
       </Router>
     );
   }

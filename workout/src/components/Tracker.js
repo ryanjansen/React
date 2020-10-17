@@ -1,31 +1,29 @@
 import React from "react";
+import { AuthContext } from "../context/AuthContext";
 import WorkoutForm from "./WorkoutForm";
 import WorkoutHistory from "./WorkoutHistory";
-import axios from "axios";
 
 class App extends React.Component {
+  static contextType = AuthContext;
+
   state = {
     workouts: [],
-    workoutList: [],
     selectedWorkout: "",
   };
 
   componentDidMount() {
+    let axios = this.context.authAxios;
+
     axios
       .get("/api/workouts")
-      .then((workouts) => {
-        let wlist = [];
-        let wk = [];
-        workouts.data.forEach((w) => {
-          wk.push({ date: w.date, workout: w.workout, exercises: w.exercises });
-          wlist.push(w.date);
-        });
-
-        this.setState({
-          workouts: wk,
-          workoutList: wlist,
-          selectedWorkout: wlist[wlist.length - 1],
-        });
+      .then(({ data }) => {
+        console.log(data);
+        if (data.length !== 0) {
+          this.setState({
+            workouts: data,
+            selectedWorkout: data[data.length - 1]._id || "",
+          });
+        }
       })
       .catch((err) => console.log(err));
   }
@@ -35,48 +33,57 @@ class App extends React.Component {
   };
 
   onFormSubmit = (newWorkout) => {
-    if (this.state.workoutList.includes(newWorkout.date)) {
-      alert("Workout already exists on this date");
-    } else {
-      axios
-        .post("/api/workouts", {
-          date: newWorkout.date,
-          workout: newWorkout.workout,
-          exercises: newWorkout.exercises,
-        })
-        .then(() => {
-          this.setState({
-            workouts: [...this.state.workouts, newWorkout],
-            workoutList: [...this.state.workoutList, newWorkout.date],
-            selectedWorkout: newWorkout.date,
-          });
-        })
-        .catch((err) => {
-          alert("Could not add workout");
+    let axios = this.context.authAxios;
+    axios
+      .post("/api/workouts", {
+        date: newWorkout.date,
+        workout: newWorkout.workout,
+        exercises: newWorkout.exercises,
+      })
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({
+          workouts: [...this.state.workouts, data.newWorkout],
+          selectedWorkout: data.newWorkout._id,
         });
-    }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  handleDelete = (date) => {
+  handleDelete = (id) => {
+    let axios = this.context.authAxios;
     axios
-      .delete(`/api/workouts/${date}`)
+      .delete(`/api/workouts/${id}`)
       .then(() => {
-        let newWorkouts = this.state.workouts.filter((w) => w.date !== date);
-        let newWorkoutList = this.state.workoutList.filter((w) => w !== date);
+        let newWorkouts = this.state.workouts.filter((w) => w._id !== id);
         this.setState({
           workouts: newWorkouts,
-          workoutList: newWorkoutList,
-          selectedWorkout: newWorkoutList[newWorkoutList.length - 1] || "",
+          selectedWorkout:
+            newWorkouts.length !== 0
+              ? newWorkouts[newWorkouts.length - 1]._id
+              : "",
         });
       })
       .catch((err) => console.log(err));
   };
 
+  Logout = () => {};
+
   render() {
     return (
-      <>
-        <div className="ui container">
+      <div className="ui container">
+        <div className="ui secondary pointing menu">
           <h1 className="ui header">Workout Tracker</h1>
+          <div className="right menu">
+            <h1 className="ui header">
+              {this.context.authState.userInfo.username}
+            </h1>
+            <button className="ui button primary" onClick={this.context.logout}>
+              Log out
+            </button>
+          </div>
         </div>
         <div className="ui container">
           <WorkoutForm
@@ -86,13 +93,12 @@ class App extends React.Component {
 
           <WorkoutHistory
             workouts={this.state.workouts}
-            workoutList={this.state.workoutList}
             selectedWorkout={this.state.selectedWorkout}
             handleDropdownChange={this.handleDropdownChange}
             handleDelete={this.handleDelete}
           />
         </div>
-      </>
+      </div>
     );
   }
 }
